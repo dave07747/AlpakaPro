@@ -36,6 +36,7 @@ public class MainActivity extends Activity {
     TextView textViewBroken;
     TimerTask task;
     Alarm alarm;
+    static boolean set = false;
 
 
 
@@ -72,7 +73,7 @@ public class MainActivity extends Activity {
     public Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
             if(result.contentEquals("broken")){
-
+                set = false;
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -80,8 +81,10 @@ public class MainActivity extends Activity {
                         textViewSafe.setVisibility(View.INVISIBLE);
                         textViewBroken.setVisibility(View.VISIBLE);
 
+                        if(set == false)
                         alarm.playSound();
 
+                        set = true;
                         NotificationCompat.Builder mBuilder =
                                 new NotificationCompat.Builder(getApplicationContext())
                                         .setSmallIcon(R.drawable.alpaka)
@@ -130,6 +133,7 @@ public class MainActivity extends Activity {
     @SuppressWarnings("deprecation")
     public void reset(View view) {
 
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -162,6 +166,7 @@ public class MainActivity extends Activity {
         textViewSafe.setVisibility(View.VISIBLE);
         textViewBroken.setVisibility(View.INVISIBLE);
        alarm.stopSound();
+        alarm.stopSound();
     }
 
     private class RetreiveData extends AsyncTask<String, String, String> {
